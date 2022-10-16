@@ -1,0 +1,2 @@
+# service-trips
+Trips microservice
