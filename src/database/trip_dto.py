@@ -4,8 +4,6 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 
-from src.domain.trip import Trip
-
 Base = declarative_base()
 
 

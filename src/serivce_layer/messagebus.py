@@ -2,7 +2,6 @@ from __future__ import annotations
 import logging
 from typing import List, Dict, Callable, Type, Union
 from src.domain import commands, events
-from . import handlers
 
 from src.serivce_layer.abstract_unit_of_work import AbstractUnitOfWork
 
