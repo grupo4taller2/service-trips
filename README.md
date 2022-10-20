@@ -1,4 +1,4 @@
-# service-trips
+# Service: Trips
 
 Trips microservice
 
