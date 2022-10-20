@@ -1,6 +1,6 @@
-# Service: Trips
+# FI-UBER
 
-Trips microservice
+## Trips microservice
 
 ![Lint](https://github.com/grupo4taller2/service-trips/actions/workflows/lint.yml/badge.svg)
 
