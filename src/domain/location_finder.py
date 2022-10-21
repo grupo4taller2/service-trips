@@ -53,10 +53,10 @@ class GMapsLocationFinder:
 
 class LocationFinder:
     def __init__(self, env: str):
-        if Settings().APP_ENV == Settings().TEST_ENV:
-            self.impl = DummyLocationFinder()
-        else:
+        if Settings().APP_ENV == Settings().PROD_ENV:
             self.impl = GMapsLocationFinder()
+        else:
+            self.impl = DummyLocationFinder()
 
     def find_by_address(self, address: str):
         return self.impl.find_by_address(address)
