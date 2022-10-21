@@ -5,3 +5,5 @@ import os
 class Settings(BaseSettings):
     DATABASE_URI: str
     API_V1_STR: str = os.environ.get("API_VERSION_PREFIX")
+    APP_ENV: str
+    TEST_ENV: str = 'testing'

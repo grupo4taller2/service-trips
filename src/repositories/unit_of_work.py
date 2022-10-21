@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from src.conf import config
 
 from src.repositories import TripRepository
-from src.serivce_layer.abstract_unit_of_work import AbstractUnitOfWork
+from src.service_layer.abstract_unit_of_work import AbstractUnitOfWork
 
 
 engine = create_engine(

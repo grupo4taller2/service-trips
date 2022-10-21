@@ -17,12 +17,14 @@ def step_check_valid_result(context):
 
 @then(u'la latitud es aproximadamente {:f}')
 def step_check_obtained_latitude(context, latitude):
-    raise NotImplementedError
+    obtained_latitude = context.location_search_response.json()['latitude']
+    assert obtained_latitude == latitude
 
 
 @then(u'la longitud es aproximadamente {:f}')
-def step_check_obtained_longitude(context):
-    raise NotImplementedError
+def step_check_obtained_longitude(context, longitude):
+    obtained_longitude = context.location_search_response.json()['longitude']
+    assert obtained_longitude == longitude
 
 
 @then(u'El resultado es una ubicación inválida')

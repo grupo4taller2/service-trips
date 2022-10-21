@@ -2,8 +2,9 @@ from __future__ import annotations
 import logging
 from typing import List, Dict, Callable, Type, Union
 from src.domain import commands, events
+from src.service_layer import handlers
 
-from src.serivce_layer.abstract_unit_of_work import AbstractUnitOfWork
+from src.service_layer.abstract_unit_of_work import AbstractUnitOfWork
 
 
 logger = logging.getLogger(__name__)
@@ -61,5 +62,5 @@ EVENT_HANDLERS = {
 }  # type: Dict[Type[events.Event], List[Callable]]
 
 COMMAND_HANDLERS = {
-
+    commands.LocationSearchCommand: handlers.search_location
 }  # type: Dict[Type[commands.Command], Callable]
