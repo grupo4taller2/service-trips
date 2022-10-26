@@ -1,4 +1,4 @@
-from src.entrypoints.http.main import app
+from src.webapi.main import app
 from behave import fixture, use_fixture
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

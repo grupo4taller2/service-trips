@@ -6,7 +6,7 @@ from src.domain import commands
 from src.service_layer import messagebus
 from src.repositories.dummy_unit_of_work import DummyUnitOfWork
 
-from src.entrypoints.http.api.v1.locations.req_res_location_models import (
+from src.webapi.v1.locations.req_res_location_models import (
     LocationResponse
 )
 

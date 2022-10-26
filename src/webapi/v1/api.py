@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
-from src.entrypoints.http.api.v1 import (
+from src.webapi.v1 import (
     healthcheck
 )
 
-from src.entrypoints.http.api.v1.locations import (
+from src.webapi.v1.locations import (
     locations_controller
 )
 

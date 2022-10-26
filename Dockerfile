@@ -16,7 +16,7 @@ COPY requirements-prod.txt ./
 COPY src ./src
 RUN  pip install -r requirements-prod.txt
 
-CMD bash -c 'python3 -m uvicorn src.entrypoints.http.main:app --host=0.0.0.0 --port=$PORT'
+CMD bash -c 'python3 -m uvicorn src.webapi.main:app --host=0.0.0.0 --port=$PORT'
 
 FROM base as development-preinstall
 # RUN echo "Installing necesary libs for DEV"

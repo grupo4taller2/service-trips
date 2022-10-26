@@ -1,12 +1,12 @@
 from fastapi import FastAPI, APIRouter
 
 from src.conf.config import Settings
-from src.entrypoints.http.api.v1 import api
+from src.webapi.v1 import api
 from src.service_layer.exceptions import (
     LocationNotFoundException,
     LocationServiceUnavailableException
 )
-from src.entrypoints.http.api.v1.exception_handlers import (
+from src.webapi.v1.exception_handlers import (
     location_not_found_exception,
     location_service_unavailable_exception
 )
