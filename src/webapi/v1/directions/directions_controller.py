@@ -23,7 +23,7 @@ async def search_directions(origin: str = '', destination: str = ''):
     cmd = commands.DirectionsSearchCommand(origin=origin,
                                            destination=destination)
     uow = DummyUnitOfWork()
-    directions: Directions = await messagebus.handle(cmd, uow)[0]
+    directions: Directions = messagebus.handle(cmd, uow)[0]
     return DirectionsResponse(
         origin_address=directions.origin.address,
         origin_latitude=directions.origin.latitude,
