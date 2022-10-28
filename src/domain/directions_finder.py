@@ -76,6 +76,8 @@ class GMapsDirectionsFinder:
         response = requests.get(endpoint)
         if response.status_code == 200:
             return self.directions_from_response(response, origin, destination)
+        elif response.status_code == 400:
+            raise DirectionsNotFoundException(origin, destination)
 
         raise DirectionsServiceUnavailableException
 
