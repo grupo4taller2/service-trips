@@ -3,12 +3,14 @@ from fastapi import FastAPI, APIRouter
 from src.conf.config import Settings
 from src.webapi.v1 import api
 from src.service_layer.exceptions import (
+    DirectionsNotFoundException,
     LocationNotFoundException,
     LocationServiceUnavailableException
 )
 from src.webapi.v1.exception_handlers import (
     location_not_found_exception,
-    location_service_unavailable_exception
+    location_service_unavailable_exception,
+    directions_not_found_exception
 )
 
 root_router = APIRouter()
@@ -21,3 +23,5 @@ app.add_exception_handler(LocationNotFoundException,
                           location_not_found_exception)
 app.add_exception_handler(LocationServiceUnavailableException,
                           location_service_unavailable_exception)
+app.add_exception_handler(DirectionsNotFoundException,
+                          directions_not_found_exception)

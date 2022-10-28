@@ -62,5 +62,6 @@ EVENT_HANDLERS = {
 }  # type: Dict[Type[events.Event], List[Callable]]
 
 COMMAND_HANDLERS = {
-    commands.LocationSearchCommand: handlers.search_location
+    commands.LocationSearchCommand: handlers.search_location,
+    commands.DirectionsSearchCommand: handlers.search_directions
 }  # type: Dict[Type[commands.Command], Callable]

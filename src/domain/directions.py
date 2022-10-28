@@ -5,12 +5,12 @@ from src.domain.distance import Distance
 
 class Directions:
     def __init__(self,
-                 location_from: Location,
-                 location_to: Location,
+                 origin: Location,
+                 destination: Location,
                  time: Time,
                  distance: Distance):
 
-        self.location_from = location_from
-        self.location_to = location_to
+        self.origin = origin
+        self.destination = destination
         self.time = time
         self.distance = distance

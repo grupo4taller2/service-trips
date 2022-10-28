@@ -7,3 +7,8 @@ class Command(BaseModel):
 
 class LocationSearchCommand(Command):
     address: str
+
+
+class DirectionsSearchCommand(Command):
+    origin: str
+    destination: str

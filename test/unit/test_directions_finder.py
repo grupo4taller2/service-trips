@@ -9,7 +9,7 @@ def test_directions_finder_fiuba():
 
     finder = DirectionsFinder(Settings().APP_ENV)
     found_directions: Directions = finder.find_by_address(ORIGIN, DESTINATION)
-    assert found_directions.location_from.address == ORIGIN
-    assert found_directions.location_to.address == DESTINATION
+    assert found_directions.origin.address == ORIGIN
+    assert found_directions.destination.address == DESTINATION
     assert found_directions.distance.repr == '5.7 km'
     assert found_directions.time.repr == '17 mins'

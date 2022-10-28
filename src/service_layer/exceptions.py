@@ -25,7 +25,7 @@ class LocationServiceUnavailableException(Exception):
 class DirectionsNotFoundException(Exception):
     def __init__(self, *args):
         if args:
-            self.message = f'origin: {args[0]}\ndestination: {args[1]}'
+            self.message = f'origin: {args[0]},destination: {args[1]}'
         else:
             self.message = None
         super().__init__(self.message)
