@@ -7,19 +7,16 @@ from src.service_layer.exceptions import (
     LocationServiceUnavailableException
 )
 
-FAKE_LOCATION_SOURCE = {
-    'Av. Paseo Colón 850, Buenos Aires': Location(
-        'Av. Paseo Colón 850, Buenos Aires',
-        -34.6174635,
-        -58.369979
-    )
-}
-
 
 class DummyLocationFinder:
     def __init__(self):
-        global FAKE_LOCATION_SOURCE
-        self.locations = FAKE_LOCATION_SOURCE
+        self.locations = {
+            'Av. Paseo Colón 850, Buenos Aires': Location(
+                'Av. Paseo Colón 850, Buenos Aires',
+                -34.6174635,
+                -58.369979
+            )
+        }
 
     def find_by_address(self, address: str):
         try:
