@@ -70,11 +70,10 @@ class GMapsDirectionsFinder:
                           distance)
 
     def find_by_address(self, origin: str, destination: str):
-        endpoint = f'{self.BASE_URL}?origin={origin}'
-        f'&destination={destination}&key={self.API_KEY}'
-
+        endpoint = f'{self.BASE_URL}'
+        endpoint += f'?origin={origin}&destination={destination}'
+        endpoint += f'&key={self.API_KEY}'
         response = requests.get(endpoint)
-
         if response.status_code == 200:
             return self.directions_from_response(response, origin, destination)
 
