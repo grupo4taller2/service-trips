@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from src.repositories import BaseRepository
-from src.domain.trip import Trip
+from domain.trips.trip import Trip
 
 
 class TripRepository(BaseRepository):
