@@ -2,21 +2,21 @@ class TripState:
     pass
 
 
-class LookingForDriver(TripState):
+class LookingForDriverState(TripState):
     pass
 
 
-class AcceptedByDriver(TripState):
+class AcceptedByDriverState(TripState):
     pass
 
 
-class DriverWaiting(TripState):
+class DriverWaitingState(TripState):
     pass
 
 
-class Ongoing(TripState):
+class OngoingState(TripState):
     pass
 
 
-class Finished(TripState):
+class FinishedState(TripState):
     pass

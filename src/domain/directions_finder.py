@@ -25,10 +25,12 @@ class DummyDirectionsFinder:
         )
 
     def find_by_address(self, origin: str, destination: str):
-        if self.fake_origin.address != origin:
+        if origin not in self.fake_origin.address:
             raise DirectionsNotFoundException(origin, destination)
-        if self.fake_destination.address != destination:
+
+        if destination not in self.fake_destination.address:
             raise DirectionsNotFoundException(origin, destination)
+
         return Directions(self.fake_origin,
                           self.fake_destination,
                           Time(17*60, '17 mins'),

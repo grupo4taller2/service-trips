@@ -12,3 +12,10 @@ class LocationSearchCommand(Command):
 class DirectionsSearchCommand(Command):
     origin: str
     destination: str
+
+
+class TripStartCommand(Command):
+    rider_username: str
+    rider_origin_address: str
+    rider_destination_address: str
+    trip_type: str

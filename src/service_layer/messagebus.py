@@ -63,5 +63,7 @@ EVENT_HANDLERS = {
 
 COMMAND_HANDLERS = {
     commands.LocationSearchCommand: handlers.search_location,
-    commands.DirectionsSearchCommand: handlers.search_directions
+    commands.DirectionsSearchCommand: handlers.search_directions,
+
+    commands.TripStartCommand: handlers.start_trip
 }  # type: Dict[Type[commands.Command], Callable]
