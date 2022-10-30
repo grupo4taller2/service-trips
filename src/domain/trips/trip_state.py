@@ -1,9 +1,11 @@
 class TripState:
-    pass
+    def __init__(self, name):
+        self.name: str = name
 
 
 class LookingForDriverState(TripState):
-    pass
+    def __init__(self):
+        super().__init__('looking_for_driver')
 
 
 class AcceptedByDriverState(TripState):

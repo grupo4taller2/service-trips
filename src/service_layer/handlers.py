@@ -1,11 +1,14 @@
 from uuid import uuid4
-from src.service_layer.abstract_unit_of_work import AbstractUnitOfWork
+
 from src.conf.config import Settings
+
+from src.service_layer.abstract_unit_of_work import AbstractUnitOfWork
+from src.external.price_estimator import PriceEstimator
 
 from src.domain.commands import (
     DirectionsSearchCommand,
     LocationSearchCommand,
-    TripStartCommand
+    TripRequestCommand
 )
 
 from src.domain.location_finder import LocationFinder
@@ -27,7 +30,7 @@ def search_directions(cmd: DirectionsSearchCommand, uow: AbstractUnitOfWork):
     return directions
 
 
-def start_trip(cmd: TripStartCommand, uow: AbstractUnitOfWork):
+def request_trip(cmd: TripRequestCommand, uow: AbstractUnitOfWork):
     id = uuid4()
     rider = Rider(cmd.rider_username)
     directions_finder = DirectionsFinder(Settings().APP_ENV)
@@ -35,8 +38,15 @@ def start_trip(cmd: TripStartCommand, uow: AbstractUnitOfWork):
         cmd.rider_origin_address,
         cmd.rider_destination_address
     )
+    price_estimator = PriceEstimator()
+    estimated_price = price_estimator.estimate_for(rider, directions)
     state = LookingForDriverState()
-    trip: Trip = Trip(id, rider, directions, cmd.trip_type, state)
+    trip: Trip = Trip(id,
+                      rider,
+                      directions,
+                      cmd.trip_type,
+                      state,
+                      estimated_price)
     with uow:
         uow.trip_repository.save(trip)
         uow.commit()

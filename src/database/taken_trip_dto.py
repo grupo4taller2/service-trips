@@ -7,8 +7,8 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-class TripDTO(Base):
-    __tablename__ = 'trips'
+class TakenTripDTO(Base):
+    __tablename__ = 'taken_trips'
     id: Union[str, Column] = Column(String, primary_key=True)
     created_at: Union[DateTime, Column] = Column(
         DateTime(timezone=True), server_default=func.now())

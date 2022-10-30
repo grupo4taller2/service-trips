@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from src.database.requested_trip_dto import RequestedTripDTO
 
 from src.repositories.base_repository import BaseRepository
 from src.domain.trips.trip import Trip
@@ -10,7 +11,8 @@ class TripRepository(BaseRepository):
         self.session: Session = session
 
     def save(self, trip: Trip):
-        pass
+        trip_dto = RequestedTripDTO.from_entity(trip)
+        self.session.add(trip_dto)
 
     def update(self, trip: Trip):
         pass

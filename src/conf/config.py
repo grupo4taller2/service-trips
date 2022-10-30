@@ -9,3 +9,6 @@ class Settings(BaseSettings):
     TEST_ENV: str = 'testing'
     PROD_ENV: str = 'production'
     GEOCODING_API_KEY: str = os.environ.get("GEOCODING_API_KEY")
+    PRICING_SERVICE_REMOTE_URL: str = os.environ.get(
+        "PRICING_SERVICE_REMOTE_URL"
+    )

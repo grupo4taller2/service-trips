@@ -14,7 +14,7 @@ class DirectionsSearchCommand(Command):
     destination: str
 
 
-class TripStartCommand(Command):
+class TripRequestCommand(Command):
     rider_username: str
     rider_origin_address: str
     rider_destination_address: str

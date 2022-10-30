@@ -6,7 +6,7 @@ from src.service_layer import messagebus
 from src.repositories.unit_of_work import UnitOfWork
 
 from src.webapi.v1.trips.req_res_trips_models import (
-    TripStartRequest,
+    TripRequestRequest,
     TripResponse,
     LocationResponse
 )
@@ -15,12 +15,12 @@ router = APIRouter()
 
 
 @router.post(
-    '/',
+    '',
     status_code=status.HTTP_201_CREATED,
     response_model=TripResponse
 )
-async def trip_start(cmd: TripStartRequest):
-    cmd = commands.TripStartCommand(
+async def trip_request(cmd: TripRequestRequest):
+    cmd = commands.TripRequestCommand(
         rider_username=cmd.rider_username,
         rider_origin_address=cmd.rider_origin_address,
         rider_destination_address=cmd.rider_destination_address,

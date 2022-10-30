@@ -2,7 +2,7 @@ from pydantic.main import BaseModel
 from pydantic import Field
 
 
-class TripStartRequest(BaseModel):
+class TripRequestRequest(BaseModel):
     rider_username: str = Field(example='mateoicalvo')
     rider_origin_address: str = Field(example='Av. Paseo Colón 850')
     rider_destination_address: str = Field(example='Gral. Las Heras 2214')
