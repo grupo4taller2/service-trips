@@ -56,6 +56,6 @@ def request_trip(cmd: TripRequestCommand, uow: AbstractUnitOfWork):
 
 def get_trip_by_id(cmd: TripGetCommand, uow: AbstractUnitOfWork):
     with uow:
-        trip = uow.trip_repository.get_by_id(cmd.id)
+        trip = uow.trip_repository.find_by_id(cmd.id)
         uow.commit()
         return trip

@@ -22,3 +22,12 @@ class OngoingState(TripState):
 
 class FinishedState(TripState):
     pass
+
+
+class TripFacade:
+    NAMES_TO_TYPES = {
+        'looking_for_driver': LookingForDriverState
+    }
+
+    def create_from_name(self, state_name: str):
+        return self.NAMES_TO_TYPES[state_name]()

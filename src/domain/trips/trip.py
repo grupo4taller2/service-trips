@@ -12,3 +12,4 @@ class Trip:
         self.type: str = type
         self.state: TripState = state
         self.estimated_price = estimated_price
+        self.events = []

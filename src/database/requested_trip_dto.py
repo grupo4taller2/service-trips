@@ -6,6 +6,14 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 
 from src.domain.trips.trip import Trip
+from src.domain.trips.trip_state import TripFacade
+from src.domain.rider import Rider
+from src.domain.location import Location
+from src.domain.directions import Directions
+from src.domain.time import Time
+from src.domain.distance import Distance
+from src.utils.formatters import DistanceFormatter, TimeFormatter
+
 
 Base = declarative_base()
 
@@ -48,4 +56,30 @@ class RequestedTripDTO(Base):
             type=trip.type,
             estimated_price=trip.estimated_price,
             distance=trip.directions.distance.meters
+        )
+
+    def to_entity(self) -> Trip:
+        rider = Rider(self.rider_username)
+        origin = Location(self.origin_address,
+                          self.origin_latitude,
+                          self.origin_longitude)
+        destination = Location(self.destination_address,
+                               self.destination_latitude,
+                               self.destination_longitude)
+        time = Time(self.estimated_time,
+                    TimeFormatter().format(self.estimated_time))
+        distance = Distance(self.distance,
+                            DistanceFormatter().format(self.distance))
+        directions = Directions(origin,
+                                destination,
+                                time,
+                                distance)
+
+        return Trip(
+            id=self.id,
+            rider=rider,
+            directions=directions,
+            type=self.type,
+            state=TripFacade().create_from_name(self.state),
+            estimated_price=self.estimated_price
         )

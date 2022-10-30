@@ -42,7 +42,7 @@ async def trip_get(trip_id: str):
         origin=origin_response,
         destination=destination_response,
         estimated_time=trip.directions.time.repr,
-        trip_type=trip.type,
+        type=trip.type,
         distance=trip.directions.distance.repr,
         state=trip.state.name
     )
@@ -79,7 +79,7 @@ async def trip_request(cmd: TripRequestRequest):
         origin=origin_response,
         destination=destination_response,
         estimated_time=trip.directions.time.repr,
-        trip_type=trip.type,
+        type=trip.type,
         distance=trip.directions.distance.repr,
         state=trip.state.name
     )
