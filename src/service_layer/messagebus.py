@@ -65,5 +65,6 @@ COMMAND_HANDLERS = {
     commands.LocationSearchCommand: handlers.search_location,
     commands.DirectionsSearchCommand: handlers.search_directions,
 
-    commands.TripRequestCommand: handlers.request_trip
+    commands.TripRequestCommand: handlers.request_trip,
+    commands.TripGetCommand: handlers.get_trip_by_id
 }  # type: Dict[Type[commands.Command], Callable]

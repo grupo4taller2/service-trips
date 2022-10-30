@@ -19,3 +19,7 @@ class TripRequestCommand(Command):
     rider_origin_address: str
     rider_destination_address: str
     trip_type: str
+
+
+class TripGetCommand(Command):
+    id: str

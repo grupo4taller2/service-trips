@@ -9,6 +9,10 @@ class TripRequestRequest(BaseModel):
     trip_type: str = Field(example='regular')
 
 
+class TripGetRequest(BaseModel):
+    id: str = Field(example='30afdcdb-1580-4a4f-b9b3-c1381c28b05c')
+
+
 class LocationResponse(BaseModel):
     address: str = Field(example='Av. Paseo Colón 850, Buenos Aires')
     latitude: float = Field(example=-34.6174679)
@@ -23,6 +27,7 @@ class TripResponse(BaseModel):
     estimated_time: str = Field(example='17 mins')
     trip_type: str = Field(example='regular')
     distance: str = Field(example='1.1 km')
+    state: str = Field(example='looking_for_driver')
 
     class Config:
         arbitrary_types_allowed = True

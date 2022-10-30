@@ -14,6 +14,40 @@ from src.webapi.v1.trips.req_res_trips_models import (
 router = APIRouter()
 
 
+@router.get(
+    '/{trip_id}',
+    status_code=status.HTTP_200_OK,
+    response_model=TripResponse
+)
+async def trip_get(trip_id: str):
+    cmd = commands.TripGetCommand(
+        id=trip_id
+    )
+    uow = UnitOfWork()
+    trip: Trip = messagebus.handle(cmd, uow)[0]
+    origin_response = LocationResponse(
+        address=trip.directions.origin.address,
+        latitude=trip.directions.origin.latitude,
+        longitude=trip.directions.origin.longitude
+    )
+    destination_response = LocationResponse(
+        address=trip.directions.destination.address,
+        latitude=trip.directions.destination.latitude,
+        longitude=trip.directions.destination.longitude
+    )
+
+    return TripResponse(
+        id=str(trip.id),
+        rider_username=trip.rider.username,
+        origin=origin_response,
+        destination=destination_response,
+        estimated_time=trip.directions.time.repr,
+        trip_type=trip.type,
+        distance=trip.directions.distance.repr,
+        state=trip.state.name
+    )
+
+
 @router.post(
     '',
     status_code=status.HTTP_201_CREATED,
@@ -46,5 +80,6 @@ async def trip_request(cmd: TripRequestRequest):
         destination=destination_response,
         estimated_time=trip.directions.time.repr,
         trip_type=trip.type,
-        distance=trip.directions.distance.repr
+        distance=trip.directions.distance.repr,
+        state=trip.state.name
     )

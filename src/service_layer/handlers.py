@@ -8,7 +8,8 @@ from src.external.price_estimator import PriceEstimator
 from src.domain.commands import (
     DirectionsSearchCommand,
     LocationSearchCommand,
-    TripRequestCommand
+    TripRequestCommand,
+    TripGetCommand
 )
 
 from src.domain.location_finder import LocationFinder
@@ -49,5 +50,12 @@ def request_trip(cmd: TripRequestCommand, uow: AbstractUnitOfWork):
                       estimated_price)
     with uow:
         uow.trip_repository.save(trip)
+        uow.commit()
+        return trip
+
+
+def get_trip_by_id(cmd: TripGetCommand, uow: AbstractUnitOfWork):
+    with uow:
+        trip = uow.trip_repository.get_by_id(cmd.id)
         uow.commit()
         return trip
