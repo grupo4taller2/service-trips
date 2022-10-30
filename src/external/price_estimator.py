@@ -23,8 +23,8 @@ class FIUBERPriceEstimator:
             'destination_address': directions.destination.address,
             'destination_latitude': directions.destination.latitude,
             'destination_longitude': directions.destination.longitude,
-            'estimated_time': directions.time.repr,
-            'distance': directions.distance.repr,
+            'estimated_time': directions.time.seconds,
+            'distance': directions.distance.meters,
         }
         response = requests.get(self.URL + '/estimations', params=params)
         if response.status_code != 200:
@@ -39,7 +39,7 @@ class PriceEstimator:
         if Settings().APP_ENV == Settings().PROD_ENV:
             self.impl = FIUBERPriceEstimator()
         else:
-            self.impl = DummyPriceEstimator()
+            self.impl = FIUBERPriceEstimator()
 
     def estimate_for(self, rider: Rider, directions: Directions):
         return self.impl.estimate_for(rider, directions)

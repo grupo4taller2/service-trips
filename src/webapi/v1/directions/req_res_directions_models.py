@@ -16,5 +16,5 @@ class DirectionsResponse(BaseModel):
     )
     destination_latitude: float = Field(example=-34.5885498)
     destination_longitude: float = Field(example=-58.3962364)
-    estimated_time: str = Field(example='33 mins')
-    distance: str = Field(example='6.8 km')
+    estimated_time: int = Field(example=1012)
+    distance: int = Field(example=6837)

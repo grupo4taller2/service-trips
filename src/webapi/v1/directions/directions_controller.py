@@ -31,6 +31,6 @@ async def search_directions(origin: str = '', destination: str = ''):
         destination_address=directions.destination.address,
         destination_latitude=directions.destination.latitude,
         destination_longitude=directions.destination.longitude,
-        estimated_time=directions.time.repr,
-        distance=directions.distance.repr
+        estimated_time=directions.time.seconds,
+        distance=directions.distance.meters
     )
