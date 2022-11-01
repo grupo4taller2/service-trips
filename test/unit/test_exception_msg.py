@@ -7,6 +7,7 @@ from src.service_layer.exceptions import (
     TripNotFoundException
 )
 
+
 def test_location_not_found():
     try:
         raise LocationNotFoundException('Paseo Colón 850')
@@ -16,6 +17,7 @@ def test_location_not_found():
         raise LocationNotFoundException
     except LocationNotFoundException as e:
         assert str(e) == 'No encontrada'
+
 
 def test_location_service_not_found():
     try:
@@ -27,15 +29,18 @@ def test_location_service_not_found():
     except LocationServiceUnavailableException as e:
         assert str(e) == 'No disponible'
 
+
 def test_directions_not_found():
+    MSG = 'origin: Paseo Colón 850,destination: Las Heras 2214'
     try:
         raise DirectionsNotFoundException('Paseo Colón 850', 'Las Heras 2214')
     except DirectionsNotFoundException as e:
-        assert e.message == 'origin: Paseo Colón 850,destination: Las Heras 2214'
+        assert e.message == MSG
     try:
         raise DirectionsNotFoundException
     except DirectionsNotFoundException as e:
         assert str(e) == 'No encontrada'
+
 
 def test_direction_service_unavailable():
     try:
@@ -47,6 +52,7 @@ def test_direction_service_unavailable():
     except DirectionsServiceUnavailableException as e:
         assert str(e) == 'No disponible'
 
+
 def test_pricing_service_unavailable():
     try:
         raise PricingServiceUnavailableException('503')
@@ -56,6 +62,7 @@ def test_pricing_service_unavailable():
         raise PricingServiceUnavailableException
     except PricingServiceUnavailableException as e:
         assert str(e) == 'No disponible'
+
 
 def test_trip_not_found():
     try:
