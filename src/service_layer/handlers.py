@@ -9,7 +9,8 @@ from src.domain.commands import (
     DirectionsSearchCommand,
     LocationSearchCommand,
     TripRequestCommand,
-    TripGetCommand
+    TripGetCommand,
+    TripGetForDriver
 )
 
 from src.domain.location_finder import LocationFinder
@@ -59,3 +60,15 @@ def get_trip_by_id(cmd: TripGetCommand, uow: AbstractUnitOfWork):
         trip = uow.trip_repository.find_by_id(cmd.id)
         uow.commit()
         return trip
+
+
+def get_trips_for_driver(cmd: TripGetForDriver, uow: AbstractUnitOfWork):
+    with uow:
+        trips = uow.trip_repository.find_for_driver_state_offset_limit(
+            cmd.driver_username,
+            cmd.trip_state,
+            cmd.offset,
+            cmd.limit
+        )
+        uow.commit()
+        return trips
