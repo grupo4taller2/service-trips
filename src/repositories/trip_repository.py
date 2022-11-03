@@ -17,6 +17,7 @@ from src.domain.distance import Distance
 
 from src.utils.formatters import TimeFormatter, DistanceFormatter
 
+
 class TripMapper:
 
     def trip_to_sql(self, trip: Trip):
@@ -27,18 +28,18 @@ class TripMapper:
         origin: Location = Location(sql_trip.origin_address,
                                     sql_trip.origin_latitude,
                                     sql_trip.origin_longitude)
-        
+
         destination: Location = Location(sql_trip.destination_address,
                                          sql_trip.destination_latitude,
                                          sql_trip.destination_longitude)
-        
+
         time: Time = Time(sql_trip.estimated_time,
                           TimeFormatter().format(sql_trip.estimated_time))
-        
+
         distance: Distance = Distance(
             sql_trip.distance,
             DistanceFormatter().format(sql_trip.distance))
-        
+
         directions: Directions = Directions(origin,
                                             destination,
                                             time,
