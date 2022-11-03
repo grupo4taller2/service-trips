@@ -1,5 +1,6 @@
 from pydantic.main import BaseModel
 from pydantic import Field
+from typing import Optional
 
 
 class TripRequestRequest(BaseModel):
@@ -28,6 +29,9 @@ class TripResponse(BaseModel):
     type: str = Field(example='regular')
     distance: str = Field(example='1.1 km')
     state: str = Field(example='looking_for_driver')
+    driver_username: Optional[str] = Field(example='lazarocalvo')
+    driver_latitude: Optional[float] = Field(example=-34.6174679)
+    driver_longitude: Optional[float] = Field(example=-58.367790)
 
     class Config:
         arbitrary_types_allowed = True

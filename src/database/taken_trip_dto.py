@@ -13,4 +13,4 @@ class TakenTripDTO(Base):
     created_at: Union[DateTime, Column] = Column(
         DateTime(timezone=True), server_default=func.now())
     updated_at: Union[DateTime, Column] = Column(
-        DateTime(timezone=True), on_update=func.now())
+        DateTime(timezone=True), onupdate=func.now())

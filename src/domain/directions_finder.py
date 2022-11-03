@@ -13,28 +13,34 @@ from src.domain.directions import Directions
 
 class DummyDirectionsFinder:
     def __init__(self):
-        self.fake_origin = Location(
+        self.paseo_colon = Location(
             'Av. Paseo Colón 850, Buenos Aires',
             -34.6174635,
             -58.369979
         )
-        self.fake_destination = Location(
+        self.las_heras = Location(
             'Gral. Las Heras 2214, Buenos Aires',
             -34.5884291,
             -58.39608870000001
         )
 
     def find_by_address(self, origin: str, destination: str):
-        if origin not in self.fake_origin.address:
-            raise DirectionsNotFoundException(origin, destination)
+        if origin == self.paseo_colon.address and \
+                destination == self.las_heras.address:
 
-        if destination not in self.fake_destination.address:
-            raise DirectionsNotFoundException(origin, destination)
+            return Directions(self.paseo_colon,
+                              self.las_heras,
+                              Time(17*60, '17 mins'),
+                              Distance(5704, '5.7 km'))
 
-        return Directions(self.fake_origin,
-                          self.fake_destination,
-                          Time(17*60, '17 mins'),
-                          Distance(5704, '5.7 km'))
+        elif origin == self.las_heras.address and \
+                destination == self.paseo_colon.address:
+
+            return Directions(self.las_heras,
+                              self.paseo_colon,
+                              Time(17*60, '17 mins'),
+                              Distance(5704, '5.7 km'))
+        raise DirectionsNotFoundException(origin, destination)
 
 
 class GMapsDirectionsFinder:

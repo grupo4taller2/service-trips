@@ -13,3 +13,15 @@ def test_directions_finder_fiuba():
     assert found_directions.destination.address == DESTINATION
     assert found_directions.distance.repr == '5.7 km'
     assert found_directions.time.repr == '17 mins'
+
+
+def test_directions_finder_reversed_fiuba():
+    ORIGIN = 'Gral. Las Heras 2214, Buenos Aires'
+    DESTINATION = 'Av. Paseo Colón 850, Buenos Aires'
+
+    finder = DirectionsFinder(Settings().APP_ENV)
+    found_directions: Directions = finder.find_by_address(ORIGIN, DESTINATION)
+    assert found_directions.origin.address == ORIGIN
+    assert found_directions.destination.address == DESTINATION
+    assert found_directions.distance.repr == '5.7 km'
+    assert found_directions.time.repr == '17 mins'

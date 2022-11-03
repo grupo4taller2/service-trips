@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Command(BaseModel):
@@ -23,3 +24,10 @@ class TripRequestCommand(Command):
 
 class TripGetCommand(Command):
     id: str
+
+
+class TripGetForDriver(Command):
+    driver_username: Optional[str]
+    trip_state: Optional[str]
+    offset: Optional[int]
+    limit: Optional[int]
