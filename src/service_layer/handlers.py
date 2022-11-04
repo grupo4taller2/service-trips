@@ -88,5 +88,5 @@ def trip_take_as_driver(cmd: TripTakeAsDriverCommand,
                                 location)
 
         driver.take(trip)
-        uow.trip_repository.save(trip)
+        uow.trip_repository.update(trip)
         return trip

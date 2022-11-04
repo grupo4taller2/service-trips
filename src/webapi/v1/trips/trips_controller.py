@@ -9,7 +9,8 @@ from src.repositories.unit_of_work import UnitOfWork
 from src.webapi.v1.trips.req_res_trips_models import (
     TripRequestRequest,
     TripResponse,
-    LocationResponse
+    LocationResponse,
+    TripPatchRequest
 )
 
 router = APIRouter()
@@ -136,3 +137,21 @@ async def get_trips_for_driver_with_state_offset_limit(
     trips = messagebus.handle(cmd, uow)[0]
     formatter = TripResponseFormatter()
     return [formatter.format(trip) for trip in trips]
+
+
+@router.patch(
+    '/{trip_id}',
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=TripResponse
+)
+async def trip_patch(trip_id: str, req: TripPatchRequest):
+    cmd = commands.TripTakeAsDriverCommand(
+        trip_id=trip_id,
+        driver_username=req.driver_username,
+        driver_latitude=req.driver_current_latitude,
+        driver_longitude=req.driver_current_longitude
+    )
+    uow = UnitOfWork()
+    trip = messagebus.handle(cmd, uow)[0]
+    formatter = TripResponseFormatter()
+    return formatter.format(trip)

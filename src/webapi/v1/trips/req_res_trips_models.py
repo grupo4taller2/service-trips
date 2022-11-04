@@ -36,3 +36,10 @@ class TripResponse(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+
+class TripPatchRequest(BaseModel):
+    driver_username: Optional[str] = Field(example='mateo95')
+    driver_current_latitude: Optional[float] = Field(example=-34.6174679)
+    driver_current_longitude: Optional[float] = Field(example=-58.367790)
+    trip_state: Optional[str] = Field(example='accepted_by_driver')
