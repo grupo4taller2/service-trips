@@ -35,6 +35,7 @@ class TripResponseFormatter:
             origin=origin_response,
             destination=destination_response,
             estimated_time=trip.directions.time.repr,
+            estimated_price=trip.estimated_price,
             type=trip.type,
             distance=trip.directions.distance.repr,
             state=trip.state.name
@@ -69,6 +70,7 @@ async def trip_get(trip_id: str):
         origin=origin_response,
         destination=destination_response,
         estimated_time=trip.directions.time.repr,
+        estimated_price=trip.estimated_price,
         type=trip.type,
         distance=trip.directions.distance.repr,
         state=trip.state.name
@@ -106,6 +108,7 @@ async def trip_request(cmd: TripRequestRequest):
         origin=origin_response,
         destination=destination_response,
         estimated_time=trip.directions.time.repr,
+        estimated_price=trip.estimated_price,
         type=trip.type,
         distance=trip.directions.distance.repr,
         state=trip.state.name

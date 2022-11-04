@@ -8,7 +8,7 @@ from src.service_layer.exceptions import PricingServiceUnavailableException
 
 class DummyPriceEstimator:
     def estimate_for(self, rider: Rider, directions: Directions):
-        return "0.08"
+        return '0.035'
 
 
 class FIUBERPriceEstimator:

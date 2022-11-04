@@ -26,6 +26,7 @@ class TripResponse(BaseModel):
     origin: LocationResponse
     destination: LocationResponse
     estimated_time: str = Field(example='17 mins')
+    estimated_price: str = Field(example='3.27')
     type: str = Field(example='regular')
     distance: str = Field(example='1.1 km')
     state: str = Field(example='looking_for_driver')
