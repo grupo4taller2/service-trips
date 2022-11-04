@@ -18,7 +18,7 @@ router = APIRouter()
 
 class TripResponseFormatter:
 
-    def format(self, trip) -> TripResponse:
+    def format(self, trip: Trip) -> TripResponse:
         origin_response = LocationResponse(
             address=trip.directions.origin.address,
             latitude=trip.directions.origin.latitude,
@@ -29,6 +29,22 @@ class TripResponseFormatter:
             latitude=trip.directions.destination.latitude,
             longitude=trip.directions.destination.longitude
         )
+
+        if trip.state.name == 'accepted_by_driver':
+            return TripResponse(
+                id=str(trip.id),
+                rider_username=trip.rider.username,
+                origin=origin_response,
+                destination=destination_response,
+                estimated_time=trip.directions.time.repr,
+                estimated_price=trip.estimated_price,
+                type=trip.type,
+                distance=trip.directions.distance.repr,
+                state=trip.state.name,
+                driver_username=trip.state.driver_username(),
+                driver_latitude=trip.state.driver_latitude(),
+                driver_longitude=trip.state.driver_longitude()
+            )
 
         return TripResponse(
             id=str(trip.id),
@@ -46,7 +62,7 @@ class TripResponseFormatter:
 @router.get(
     '/{trip_id}',
     status_code=status.HTTP_200_OK,
-    response_model=TripResponse
+    response_model=TripResponse,
 )
 async def trip_get(trip_id: str):
     cmd = commands.TripGetCommand(
@@ -54,28 +70,8 @@ async def trip_get(trip_id: str):
     )
     uow = UnitOfWork()
     trip: Trip = messagebus.handle(cmd, uow)[0]
-    origin_response = LocationResponse(
-        address=trip.directions.origin.address,
-        latitude=trip.directions.origin.latitude,
-        longitude=trip.directions.origin.longitude
-    )
-    destination_response = LocationResponse(
-        address=trip.directions.destination.address,
-        latitude=trip.directions.destination.latitude,
-        longitude=trip.directions.destination.longitude
-    )
-
-    return TripResponse(
-        id=str(trip.id),
-        rider_username=trip.rider.username,
-        origin=origin_response,
-        destination=destination_response,
-        estimated_time=trip.directions.time.repr,
-        estimated_price=trip.estimated_price,
-        type=trip.type,
-        distance=trip.directions.distance.repr,
-        state=trip.state.name
-    )
+    formatter = TripResponseFormatter()
+    return formatter.format(trip)
 
 
 @router.post(

@@ -14,6 +14,7 @@ class TripState:
     def taken_by(self, driver: Driver):
         raise NotImplementedError
 
+    # FIXME: Move to trip?
     def driver_username(self):
         raise NotImplementedError
 

@@ -89,4 +89,5 @@ def trip_take_as_driver(cmd: TripTakeAsDriverCommand,
 
         driver.take(trip)
         uow.trip_repository.update(trip)
+        uow.commit()
         return trip
