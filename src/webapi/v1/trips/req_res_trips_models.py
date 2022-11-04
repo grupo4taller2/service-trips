@@ -26,6 +26,7 @@ class TripResponse(BaseModel):
     origin: LocationResponse
     destination: LocationResponse
     estimated_time: str = Field(example='17 mins')
+    estimated_price: str = Field(example='3.27')
     type: str = Field(example='regular')
     distance: str = Field(example='1.1 km')
     state: str = Field(example='looking_for_driver')
@@ -35,3 +36,10 @@ class TripResponse(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+
+class TripPatchRequest(BaseModel):
+    driver_username: Optional[str] = Field(example='mateo95')
+    driver_current_latitude: Optional[float] = Field(example=-34.6174679)
+    driver_current_longitude: Optional[float] = Field(example=-58.367790)
+    trip_state: Optional[str] = Field(example='accepted_by_driver')

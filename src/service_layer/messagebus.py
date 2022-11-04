@@ -67,5 +67,6 @@ COMMAND_HANDLERS = {
 
     commands.TripRequestCommand: handlers.request_trip,
     commands.TripGetCommand: handlers.get_trip_by_id,
-    commands.TripGetForDriver: handlers.get_trips_for_driver
+    commands.TripGetForDriver: handlers.get_trips_for_driver,
+    commands.TripTakeAsDriverCommand: handlers.trip_take_as_driver,
 }  # type: Dict[Type[commands.Command], Callable]

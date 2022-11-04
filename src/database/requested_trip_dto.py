@@ -33,7 +33,7 @@ class RequestedTripDTO(Base):
     destination_longitude: Union[float, Column] = Column(Float)
     estimated_time: Union[int, Column] = Column(Integer)
     type: Union[str, Column] = Column(String)
-    estimated_price: Union[float, Column] = Column(Float)
+    estimated_price: Union[str, Column] = Column(String(128))
     distance: Union[int, Column] = Column(Integer)
     created_at: Union[DateTime, Column] = Column(
         DateTime(timezone=True), server_default=func.now())
