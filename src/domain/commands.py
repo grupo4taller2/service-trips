@@ -31,3 +31,10 @@ class TripGetForDriver(Command):
     trip_state: Optional[str]
     offset: Optional[int]
     limit: Optional[int]
+
+
+class TripTakeAsDriverCommand(Command):
+    trip_id: str
+    driver_username: str
+    driver_latitude: float
+    driver_longitude: float

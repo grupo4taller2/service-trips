@@ -19,7 +19,6 @@ from src.utils.formatters import TimeFormatter, DistanceFormatter
 
 
 class TripMapper:
-
     def trip_to_sql(self, trip: Trip):
         pass
 
