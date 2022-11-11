@@ -11,7 +11,6 @@ from src.domain.commands import (
     TripRequestCommand,
     TripGetCommand,
     TripGetForDriver,
-    TripTakeAsDriverCommand,
     TripUpdateCommand
 )
 
@@ -77,22 +76,6 @@ def get_trips_for_driver(cmd: TripGetForDriver, uow: AbstractUnitOfWork):
         )
         uow.commit()
         return trips
-
-
-def trip_take_as_driver(cmd: TripTakeAsDriverCommand,
-                        uow: AbstractUnitOfWork):
-    with uow:
-        trip = uow.trip_repository.find_by_id(cmd.trip_id)
-        location: Location = Location('unknown',
-                                      cmd.driver_latitude,
-                                      cmd.driver_longitude)
-        driver: Driver = Driver(cmd.driver_username,
-                                location)
-
-        driver.take(trip)
-        uow.trip_repository.update(trip)
-        uow.commit()
-        return trip
 
 
 def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
