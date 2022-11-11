@@ -126,7 +126,7 @@ class TripRepository(BaseRepository):
         self.session.flush()
 
         taken_trip_dto = TakenTripDTO.from_entity(trip)
-        # self.session.add(taken_trip_dto)
+        self.session.add(taken_trip_dto)
         self.seen.add(trip)
 
     def find_by_id(self, id: str):

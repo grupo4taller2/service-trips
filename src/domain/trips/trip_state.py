@@ -89,7 +89,7 @@ class TripFacade:
     NAMES_TO_TYPES = {
         'looking_for_driver': LookingForDriverState,
         'accepted_by_driver': AcceptedByDriverState,
-        'driver_waiting': DriverWaitingState
+        'driver_arrived': DriverWaitingState
     }
     @classmethod
     def create_from_name(cls, state_name: str, driver: Driver=None):
