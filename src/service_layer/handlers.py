@@ -11,12 +11,13 @@ from src.domain.commands import (
     TripRequestCommand,
     TripGetCommand,
     TripGetForDriver,
-    TripTakeAsDriverCommand
+    TripUpdateCommand
 )
 
 from src.domain.location_finder import LocationFinder
 from src.domain.directions_finder import DirectionsFinder
 from src.domain.trips.trip import Trip
+from src.domain.trips.trip_state import TripFacade
 from src.domain.trips.trip_state import LookingForDriverState
 from src.domain.rider import Rider
 from src.domain.driver import Driver
@@ -77,17 +78,16 @@ def get_trips_for_driver(cmd: TripGetForDriver, uow: AbstractUnitOfWork):
         return trips
 
 
-def trip_take_as_driver(cmd: TripTakeAsDriverCommand,
-                        uow: AbstractUnitOfWork):
+def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
     with uow:
-        trip = uow.trip_repository.find_by_id(cmd.trip_id)
+        trip: Trip = uow.trip_repository.find_by_id(cmd.trip_id)
         location: Location = Location('unknown',
                                       cmd.driver_latitude,
                                       cmd.driver_longitude)
         driver: Driver = Driver(cmd.driver_username,
                                 location)
-
-        driver.take(trip)
-        uow.trip_repository.update(trip)
+        state = TripFacade.create_from_name(cmd.trip_state, driver)
+        driver.update(trip, state)
+        trip = uow.trip_repository.update(trip)
         uow.commit()
         return trip
