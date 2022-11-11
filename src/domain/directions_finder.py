@@ -48,7 +48,9 @@ class GMapsDirectionsFinder:
     API_KEY = Settings().GEOCODING_API_KEY
     NOT_FOUND_STATUS = 'NOT_FOUND'
 
-    def directions_from_response(self, response, origin, destination):
+    def directions_from_response(self, response,
+                                 origin, destination):  # pragma: no cover
+
         status = response.json()['status']
         if status == self.NOT_FOUND_STATUS:
             raise DirectionsNotFoundException(origin, destination)
@@ -77,7 +79,8 @@ class GMapsDirectionsFinder:
                           duration,
                           distance)
 
-    def find_by_address(self, origin: str, destination: str):
+    def find_by_address(self, origin: str,
+                        destination: str):  # pragma: no cover
         endpoint = f'{self.BASE_URL}'
         endpoint += f'?origin={origin}&destination={destination}'
         endpoint += f'&key={self.API_KEY}'

@@ -108,6 +108,7 @@ class TripFacade:
         'driver_arrived': DriverWaitingState,
         'start_confirmed_by_driver': OngoingState
     }
+
     @classmethod
-    def create_from_name(cls, state_name: str, driver: Driver=None):
+    def create_from_name(cls, state_name: str, driver: Driver = None):
         return cls.NAMES_TO_TYPES[state_name](driver)

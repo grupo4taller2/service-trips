@@ -6,11 +6,7 @@ from src.database.taken_trip_dto import TakenTripDTO
 
 from src.repositories.base_repository import BaseRepository
 from src.domain.trips.trip import Trip
-from src.domain.trips.trip_state import (
-    TripFacade,
-    AcceptedByDriverState,
-    LookingForDriverState
-)
+from src.domain.trips.trip_state import TripFacade
 from src.domain.rider import Rider
 from src.domain.driver import Driver
 from src.domain.directions import Directions
@@ -58,7 +54,7 @@ class TripMapper:
             driver: Driver = Driver(taken.driver_username,
                                     driver_location)
             state = TripFacade().create_from_name(requested.state, driver)
-            
+
         return Trip(
             id=UUID(requested.id),
             rider=rider,
@@ -137,11 +133,11 @@ class TripRepository(BaseRepository):
                 TakenTripDTO.driver_longitude: taken_trip_dto.driver_longitude,
             }
             self.session.query(TakenTripDTO) \
-            .filter_by(id=str(trip.id)) \
-            .update(taken_trip_update)
-        else:    
+                .filter_by(id=str(trip.id)) \
+                .update(taken_trip_update)
+        else:
             self.session.add(taken_trip_dto)
-            
+
         self.seen.add(trip)
         return trip
 

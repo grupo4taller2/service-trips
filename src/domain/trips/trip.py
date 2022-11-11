@@ -2,7 +2,6 @@ from uuid import UUID
 from src.domain.directions import Directions
 from src.domain.rider import Rider
 from src.domain.trips.trip_state import TripState
-from src.domain.driver import Driver
 
 
 class Trip:
@@ -14,9 +13,6 @@ class Trip:
         self.state: TripState = state
         self.estimated_price = estimated_price
         self.events = []
-
-    def taken_by(self, driver: Driver):
-        self.state = self.state.taken_by(driver)
 
     def driver_username(self):
         return self.state.driver_username()
