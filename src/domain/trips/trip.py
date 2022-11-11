@@ -29,3 +29,4 @@ class Trip:
 
     def update(self, driver, new_state):
         self.state = self.state.transition(driver, new_state)
+        return self

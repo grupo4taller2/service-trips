@@ -143,6 +143,7 @@ class TripRepository(BaseRepository):
             self.session.add(taken_trip_dto)
             
         self.seen.add(trip)
+        return trip
 
     def find_by_id(self, id: str):
         trip_dto = self.session \

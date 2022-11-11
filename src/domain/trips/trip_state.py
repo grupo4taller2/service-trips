@@ -76,9 +76,25 @@ class DriverWaitingState(TripState):
     def driver_longitude(self):
         return self.driver.location.longitude
 
+    def transition(self, driver, new_state):
+        # FIXME: Cancelaciones se tratarían acá con un hashmap
+        # de estados posibles, por ejemplo
+        return OngoingState(driver)
+
 
 class OngoingState(TripState):
-    pass
+    def __init__(self, driver: Driver):
+        super().__init__('start_confirmed_by_driver')
+        self.driver = driver
+
+    def driver_username(self):
+        return self.driver.username
+
+    def driver_latitude(self):
+        return self.driver.location.latitude
+
+    def driver_longitude(self):
+        return self.driver.location.longitude
 
 
 class FinishedState(TripState):
@@ -89,7 +105,8 @@ class TripFacade:
     NAMES_TO_TYPES = {
         'looking_for_driver': LookingForDriverState,
         'accepted_by_driver': AcceptedByDriverState,
-        'driver_arrived': DriverWaitingState
+        'driver_arrived': DriverWaitingState,
+        'start_confirmed_by_driver': OngoingState
     }
     @classmethod
     def create_from_name(cls, state_name: str, driver: Driver=None):

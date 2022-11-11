@@ -105,6 +105,6 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
                                 location)
         state = TripFacade.create_from_name(cmd.trip_state, driver)
         driver.update(trip, state)
-        uow.trip_repository.update(trip)
+        trip = uow.trip_repository.update(trip)
         uow.commit()
         return trip
