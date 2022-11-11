@@ -10,7 +10,7 @@ from src.webapi.v1.trips.req_res_trips_models import (
     TripRequestRequest,
     TripResponse,
     LocationResponse,
-    TripPatchRequest
+    TripPatchRequest,
 )
 
 router = APIRouter()
@@ -141,11 +141,12 @@ async def get_trips_for_driver_with_state_offset_limit(
     response_model=TripResponse
 )
 async def trip_patch(trip_id: str, req: TripPatchRequest):
-    cmd = commands.TripTakeAsDriverCommand(
+    cmd = commands.TripUpdateCommand(
         trip_id=trip_id,
         driver_username=req.driver_username,
         driver_latitude=req.driver_current_latitude,
-        driver_longitude=req.driver_current_longitude
+        driver_longitude=req.driver_current_longitude,
+        trip_state=req.trip_state,
     )
     uow = UnitOfWork()
     trip = messagebus.handle(cmd, uow)[0]

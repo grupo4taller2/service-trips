@@ -26,3 +26,6 @@ class Trip:
 
     def driver_longitude(self):
         return self.state.driver_longitude()
+
+    def update(self, driver, new_state):
+        self.state = self.state.transition(driver, new_state)

@@ -47,7 +47,7 @@ class TripMapper:
         if requested.state == 'looking_for_driver':
             state = TripFacade().create_from_name('looking_for_driver')
 
-        elif requested.state == 'accepted_by_driver':
+        else:
             driver_location = Location('unknown',
                                        taken.driver_latitude,
                                        taken.driver_longitude)
@@ -88,13 +88,13 @@ class TripMapper:
         if sql_trip.state == 'looking_for_driver':
             state = TripFacade().create_from_name('looking_for_driver')
 
-        elif sql_trip.state == 'accepted_by_driver':
+        else:
             driver_location = Location('unknown',
                                        sql_trip.driver_latitude,
                                        sql_trip.driver_longitude)
             driver: Driver = Driver(sql_trip.driver_username,
                                     driver_location)
-            state = AcceptedByDriverState(driver)
+            state = TripFacade().create_from_name(sql_trip.state, driver)
 
         return Trip(
             id=UUID(sql_trip.id),
@@ -115,8 +115,6 @@ class TripRepository(BaseRepository):
         self.session.add(trip_dto)
 
     def update(self, trip: Trip):
-        if trip.state.name != 'accepted_by_driver':
-            pass
         state_update = {
             RequestedTripDTO.state: trip.state.name
         }
@@ -128,7 +126,7 @@ class TripRepository(BaseRepository):
         self.session.flush()
 
         taken_trip_dto = TakenTripDTO.from_entity(trip)
-        self.session.add(taken_trip_dto)
+        # self.session.add(taken_trip_dto)
         self.seen.add(trip)
 
     def find_by_id(self, id: str):
