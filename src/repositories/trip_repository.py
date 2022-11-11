@@ -6,7 +6,11 @@ from src.database.taken_trip_dto import TakenTripDTO
 
 from src.repositories.base_repository import BaseRepository
 from src.domain.trips.trip import Trip
-from src.domain.trips.trip_state import TripFacade, AcceptedByDriverState
+from src.domain.trips.trip_state import (
+    TripFacade,
+    AcceptedByDriverState,
+    LookingForDriverState
+)
 from src.domain.rider import Rider
 from src.domain.driver import Driver
 from src.domain.directions import Directions
@@ -53,8 +57,8 @@ class TripMapper:
                                        taken.driver_longitude)
             driver: Driver = Driver(taken.driver_username,
                                     driver_location)
-            state = AcceptedByDriverState(driver)
-
+            state = TripFacade().create_from_name(requested.state, driver)
+            
         return Trip(
             id=UUID(requested.id),
             rider=rider,
@@ -126,7 +130,18 @@ class TripRepository(BaseRepository):
         self.session.flush()
 
         taken_trip_dto = TakenTripDTO.from_entity(trip)
-        self.session.add(taken_trip_dto)
+        if self.session.query(TakenTripDTO).filter_by(id=str(trip.id)).first():
+            taken_trip_update = {
+                TakenTripDTO.driver_username: taken_trip_dto.driver_username,
+                TakenTripDTO.driver_latitude: taken_trip_dto.driver_latitude,
+                TakenTripDTO.driver_longitude: taken_trip_dto.driver_longitude,
+            }
+            self.session.query(TakenTripDTO) \
+            .filter_by(id=str(trip.id)) \
+            .update(taken_trip_update)
+        else:    
+            self.session.add(taken_trip_dto)
+            
         self.seen.add(trip)
 
     def find_by_id(self, id: str):
