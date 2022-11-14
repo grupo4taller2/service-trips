@@ -1,5 +1,4 @@
 from prometheus_client import Counter, generate_latest
-import random
 
 STATE_TO_METRIC = {
     'looking_for_driver': 'trip_requested',
