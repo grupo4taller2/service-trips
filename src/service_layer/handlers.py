@@ -60,7 +60,7 @@ def request_trip(cmd: TripRequestCommand, uow: AbstractUnitOfWork):
     with uow:
         uow.trip_repository.save(trip)
         uow.commit()
-    FiuberMetrics.count_trip_update(state.name)
+    FiuberMetrics.count_trip_update(trip)
     return trip
 
 
@@ -95,5 +95,5 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
         driver.update(trip, state)
         trip = uow.trip_repository.update(trip)
         uow.commit()
-        FiuberMetrics.count_trip_update(state.name)
+        FiuberMetrics.count_trip_update(trip)
         return trip
