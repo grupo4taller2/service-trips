@@ -29,5 +29,5 @@ api_router.include_router(trips_controller.router,
                           tags=['trips'])
 
 api_router.include_router(metrics_controller.router,
-    prefix='/metrics',
-    tags=['metrics'])
+                          prefix='/metrics',
+                          tags=['metrics'])

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from src.metrics import FiuberMetrics
+from src.metrics.metrics import FiuberMetrics
 from fastapi import Response
 
 router = APIRouter()
