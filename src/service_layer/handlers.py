@@ -5,6 +5,8 @@ from src.conf.config import Settings
 from src.service_layer.abstract_unit_of_work import AbstractUnitOfWork
 from src.external.price_estimator import PriceEstimator
 
+from src.metrics.metrics import FiuberMetrics
+
 from src.domain.commands import (
     DirectionsSearchCommand,
     LocationSearchCommand,
@@ -27,12 +29,14 @@ from src.domain.location import Location
 def search_location(cmd: LocationSearchCommand, uow: AbstractUnitOfWork):
     location_finder = LocationFinder(Settings().APP_ENV)
     location = location_finder.find_by_address(cmd.address)
+    FiuberMetrics.count_event(FiuberMetrics.LocationSearched)
     return location
 
 
 def search_directions(cmd: DirectionsSearchCommand, uow: AbstractUnitOfWork):
     directions_finder = DirectionsFinder(Settings().APP_ENV)
     directions = directions_finder.find_by_address(cmd.origin, cmd.destination)
+    FiuberMetrics.count_event(FiuberMetrics.DirectionsSearched)
     return directions
 
 
@@ -56,7 +60,8 @@ def request_trip(cmd: TripRequestCommand, uow: AbstractUnitOfWork):
     with uow:
         uow.trip_repository.save(trip)
         uow.commit()
-        return trip
+    FiuberMetrics.count_trip_update(state.name)
+    return trip
 
 
 def get_trip_by_id(cmd: TripGetCommand, uow: AbstractUnitOfWork):
@@ -90,4 +95,5 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
         driver.update(trip, state)
         trip = uow.trip_repository.update(trip)
         uow.commit()
+        FiuberMetrics.count_trip_update(state.name)
         return trip
