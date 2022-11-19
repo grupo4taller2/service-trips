@@ -166,7 +166,8 @@ class TripRepository(BaseRepository):
                                    TakenTripDTO.id == RequestedTripDTO.id,
                                    isouter=True)
 
-        trip_dtos = trip_dtos.limit(limit).offset(offset)
+        trip_dtos = trip_dtos.order_by(RequestedTripDTO.created_at) \
+            .limit(limit).offset(offset)
         mapper = TripMapper()
 
         return [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
