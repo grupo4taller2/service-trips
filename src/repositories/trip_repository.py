@@ -171,3 +171,31 @@ class TripRepository(BaseRepository):
         mapper = TripMapper()
 
         return [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
+
+        
+    def find_busy_drivers(self):
+        trip_dtos = self.session.query(RequestedTripDTO) \
+            .filter_by(state="accepted_by_driver")
+
+        trip_dtos = trip_dtos.join(TakenTripDTO,
+                                   TakenTripDTO.id == RequestedTripDTO.id,
+                                   isouter=True)
+        
+        mapper = TripMapper()
+
+        lista_trips = [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
+        for trip in lista_trips:
+            print(trip.driver_username)
+        """
+        username_list = []
+        for drivers in trip_dtos.values(TakenTripDTO.driver_username):
+            username_list.append(drivers)
+        return username_list
+        
+        free_drivers = self.session.query(RequestedTripDTO) \
+            .filter_by(state="accepted_by_driver")
+        username_list = []
+        for driver_username in (free_drivers.driver_username):
+            username_list.append(driver_username)
+        return username_list
+        """
