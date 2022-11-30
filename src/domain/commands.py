@@ -42,3 +42,6 @@ class TripUpdateCommand(Command):
 
 class GetTakenDriversCommand(Command):
     cantidad: int
+
+class GetFreeDriversCommand(Command):
+    cantidad: int

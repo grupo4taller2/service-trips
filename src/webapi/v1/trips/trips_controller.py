@@ -5,7 +5,7 @@ from typing import List, Optional
 from src.domain import commands
 from src.service_layer import messagebus
 from src.repositories.unit_of_work import UnitOfWork
-from src.notifications.firebase_notifications import sendNotification
+from src.notifications.notification_rider import sendNotification
 from src.notifications.notification_drivers import sendNotificationDrivers
 
 from src.webapi.v1.trips.req_res_trips_models import (
@@ -159,10 +159,10 @@ async def trip_patch(trip_id: str, req: TripPatchRequest):
     trip = messagebus.handle(cmd, uow)[0]
     formatter = TripResponseFormatter()
     trip_resp = formatter.format(trip)
-    """
+
     if(req.trip_state == 'accepted_by_driver'):
         print("\n HOLA \n")
         print(trip_resp.rider_username)
         sendNotification(trip_resp.rider_username)
-    """
+        
     return trip_resp

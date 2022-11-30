@@ -12,7 +12,8 @@ from src.domain.commands import (
     TripGetCommand,
     TripGetForDriver,
     TripUpdateCommand,
-    GetTakenDriversCommand
+    GetTakenDriversCommand,
+    GetFreeDriversCommand
 )
 
 from src.domain.location_finder import LocationFinder
@@ -96,5 +97,11 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
 def get_taken_drivers(cmd: GetTakenDriversCommand, uow: AbstractUnitOfWork):
     with uow:
         driver_list = uow.trip_repository.find_busy_drivers()
+        uow.commit()
+        return driver_list
+
+def get_free_drivers(cmd: GetFreeDriversCommand, uow: AbstractUnitOfWork):
+    with uow:
+        driver_list = uow.trip_repository.find_free_drivers()
         uow.commit()
         return driver_list

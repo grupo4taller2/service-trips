@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy.orm import Session
-
+from sqlalchemy.sql import text
 from src.database.requested_trip_dto import RequestedTripDTO
 from src.database.taken_trip_dto import TakenTripDTO
 
@@ -199,3 +199,31 @@ class TripRepository(BaseRepository):
             username_list.append(driver_username)
         return username_list
         """
+    def find_free_drivers(self):    
+ 
+        SQL_QUERY = text(
+            "x.username "
+            "FROM ("
+            "SELECT drivers.username "
+            "FROM drivers "
+            "EXCEPT "
+            "SELECT DISTINCT taken_trips.driver_username "
+            "FROM requested_trips, taken_trips "
+            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver')) as x "
+            "INNER JOIN taken_trips ON x.username = taken_trips.driver_username")
+
+        SQL_AUX = text(
+            "taken_trips.driver_username, requested_trips.updated_at "
+            "FROM requested_trips, taken_trips "
+        )
+        result = self.session.query(SQL_QUERY).all()
+
+        aux = self.session.query(SQL_AUX)
+        
+        #final = result.join(aux,result.with_entitie) == aux.username).all()
+        print("POLLLO")
+        print(result)
+        print("\n")
+        print("COOOOOOOL")
+        print([row[0] for row in result])
+        return result

@@ -70,4 +70,5 @@ COMMAND_HANDLERS = {
     commands.TripGetForDriver: handlers.get_trips_for_driver,
     commands.TripUpdateCommand: handlers.trip_update,
     commands.GetTakenDriversCommand: handlers.get_taken_drivers,
+    commands.GetFreeDriversCommand: handlers.get_free_drivers,
 }  # type: Dict[Type[commands.Command], Callable]
