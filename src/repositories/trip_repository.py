@@ -123,7 +123,7 @@ class TripRepository(BaseRepository):
 
     def trips_last_minutes(self, minutes):
         q = 'SELECT driver_username, distance, rider_username, estimated_time'
-        q += ', estimated_price, distance FROM taken_trips LEFT JOIN '
+        q += ', estimated_price FROM taken_trips LEFT JOIN '
         q += 'requested_trips rt on rt.id = taken_trips.id WHERE '
         q += 'taken_trips.updated_at > current_timestamp - interval '
         q += f"'{minutes} minutes'"
