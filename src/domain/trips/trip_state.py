@@ -39,7 +39,9 @@ class LookingForDriverState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
-        return AcceptedByDriverState(driver)
+        if isinstance(new_state, AcceptedByDriverState):
+            return AcceptedByDriverState(driver)
+        return LookingForDriverState(driver)
 
 
 class AcceptedByDriverState(TripState):
@@ -59,7 +61,9 @@ class AcceptedByDriverState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
-        return DriverWaitingState(driver)
+        if isinstance(new_state, DriverWaitingState):
+            return DriverWaitingState(driver)
+        return AcceptedByDriverState(driver)
 
 
 class DriverWaitingState(TripState):
@@ -79,7 +83,9 @@ class DriverWaitingState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
-        return OngoingState(driver)
+        if isinstance(new_state, OngoingState):
+            return OngoingState(driver)
+        return DriverWaitingState(driver)
 
 
 class OngoingState(TripState):
@@ -99,7 +105,9 @@ class OngoingState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
-        return FinishedState(driver)
+        if isinstance(new_state, FinishedState):
+            return FinishedState(driver)
+        return OngoingState(driver)
 
 
 class FinishedState(TripState):
@@ -115,6 +123,11 @@ class FinishedState(TripState):
 
     def driver_longitude(self):
         return self.driver.location.longitude
+
+    def transition(self, driver, new_state):
+        # FIXME: Cancelaciones se tratarían acá con un hashmap
+        # de estados posibles, por ejemplo
+        return FinishedState(driver)
 
 
 class TripFacade:

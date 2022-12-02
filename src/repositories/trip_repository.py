@@ -111,6 +111,26 @@ class TripRepository(BaseRepository):
         super().__init__()
         self.session: Session = session
 
+    def trips_for_driver(self, username):
+        q = 'COUNT(driver_username) FROM taken_trips LEFT JOIN '
+        q += 'requested_trips rt on rt.id = taken_trips.id WHERE '
+        q += 'taken_trips.updated_at > current_timestamp - interval '
+        q += "'30 minutes' AND rt.state = 'finished_confirmed_by_driver' "
+        q += f"AND taken_trips.driver_username = '{username}'"
+
+        result = self.session.query(text(q))
+        return result[0][0]
+
+    def trips_last_minutes(self, minutes):
+        q = 'SELECT driver_username, distance, rider_username, estimated_time'
+        q += ', estimated_price FROM taken_trips LEFT JOIN '
+        q += 'requested_trips rt on rt.id = taken_trips.id WHERE '
+        q += 'taken_trips.updated_at > current_timestamp - interval '
+        q += f"'{minutes} minutes'"
+
+        result = self.session.execute(text(q))
+        return result.all()
+
     def save(self, trip: Trip):
         trip_dto = RequestedTripDTO.from_entity(trip)
         self.session.add(trip_dto)

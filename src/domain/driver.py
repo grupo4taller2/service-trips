@@ -9,3 +9,4 @@ class Driver:
     def update(self, trip, state):
         updated_trip = trip.update(self, state)
         self.current_trip = updated_trip
+        return updated_trip

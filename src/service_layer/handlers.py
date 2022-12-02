@@ -89,7 +89,7 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
         driver: Driver = Driver(cmd.driver_username,
                                 location)
         state = TripFacade.create_from_name(cmd.trip_state, driver)
-        driver.update(trip, state)
+        trip = driver.update(trip, state)
         trip = uow.trip_repository.update(trip)
         uow.commit()
         return trip
