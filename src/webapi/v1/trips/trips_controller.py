@@ -29,8 +29,14 @@ class TripResponseFormatter:
             latitude=trip.directions.destination.latitude,
             longitude=trip.directions.destination.longitude
         )
+        ongoing_states = [
+            'accepted_by_driver',
+            'driver_arrived',
+            'start_confirmed_by_driver',
+            'finished_confirmed_by_driver',
 
-        if trip.state.name == 'accepted_by_driver':
+        ]
+        if trip.state.name in ongoing_states:
             return TripResponse(
                 id=str(trip.id),
                 rider_username=trip.rider.username,
