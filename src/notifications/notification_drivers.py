@@ -1,11 +1,35 @@
-import requests
-import os
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-
+# flake8: noqa
 from src.domain import commands
 from src.service_layer import messagebus
 from src.repositories.unit_of_work import UnitOfWork
+
+from src.no_sql_database.no_sql_db import token_collection
+
+from exponent_server_sdk import (
+    PushClient,
+    PushMessage,
+)
+
+
+def sendNotification(username):
+    token_bdd = token_collection.find_one({"username": username})
+    if(token_bdd is None):
+        print("NO TOKEN")
+        return
+    print(username)
+    print(token_bdd)
+    print(token_bdd["token"])
+    token = token_bdd["token"]
+    body_msg = "New Trip Available"
+    try:
+        response = PushClient().publish(
+            PushMessage(to=token,
+                        title= username,
+                        body=body_msg,
+                        data=None))
+    except Exception as e:
+        print("ERROR")
+
 
 def getFreeDrivers():
     cmd = commands.GetFreeDriversCommand(
@@ -18,26 +42,9 @@ def getFreeDrivers():
 
 def sendNotificationDrivers():
     free_drivers = getFreeDrivers()
-    print("ESTO ES EL PROBLEMA")
+    print("Free Drivers")
     print(free_drivers)
-    """
-    session = requests.Session()
-    retry = Retry(connect=3, backoff_factor=0.5)
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    print(os.environ["TRIPS_SERVICE_USERS_URL"])
-    uri = os.environ["TRIPS_SERVICE_USERS_URL"] + "/drivers/username/all"
-    response = session.get(uri)
-    lista_drivers = response.json()
-    print(lista_drivers)
-
-
-    def find_free_drivers(self):    
- 
-         # from sqlalchemy.sql import text
-        SQL_QUERY = text("drivers.username FROM drivers EXCEPT SELECT DISTINCT taken_trips.driver_username FROM requested_trips, taken_trips WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver')")
- 
-        result = self.session.query(SQL_QUERY).all() 
-        print([row[0] for row in result]
-    """
+    for driver in free_drivers:
+        sendNotification(driver)
+    print("FINISHED")
+    

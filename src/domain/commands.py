@@ -40,8 +40,10 @@ class TripUpdateCommand(Command):
     driver_longitude: float
     trip_state: str
 
+
 class GetTakenDriversCommand(Command):
     cantidad: int
+
 
 class GetFreeDriversCommand(Command):
     cantidad: int

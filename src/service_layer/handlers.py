@@ -94,11 +94,13 @@ def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
         uow.commit()
         return trip
 
+
 def get_taken_drivers(cmd: GetTakenDriversCommand, uow: AbstractUnitOfWork):
     with uow:
         driver_list = uow.trip_repository.find_busy_drivers()
         uow.commit()
         return driver_list
+
 
 def get_free_drivers(cmd: GetFreeDriversCommand, uow: AbstractUnitOfWork):
     with uow:

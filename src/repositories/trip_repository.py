@@ -1,3 +1,4 @@
+# flake8: noqa
 from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
@@ -172,58 +173,59 @@ class TripRepository(BaseRepository):
 
         return [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
 
-        
-    def find_busy_drivers(self):
-        trip_dtos = self.session.query(RequestedTripDTO) \
-            .filter_by(state="accepted_by_driver")
-
-        trip_dtos = trip_dtos.join(TakenTripDTO,
-                                   TakenTripDTO.id == RequestedTripDTO.id,
-                                   isouter=True)
-        
-        mapper = TripMapper()
-
-        lista_trips = [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
-        for trip in lista_trips:
-            print(trip.driver_username)
-        """
-        username_list = []
-        for drivers in trip_dtos.values(TakenTripDTO.driver_username):
-            username_list.append(drivers)
-        return username_list
-        
-        free_drivers = self.session.query(RequestedTripDTO) \
-            .filter_by(state="accepted_by_driver")
-        username_list = []
-        for driver_username in (free_drivers.driver_username):
-            username_list.append(driver_username)
-        return username_list
-        """
-    def find_free_drivers(self):    
- 
+    def find_free_drivers(self):
         SQL_QUERY = text(
-            "x.username "
-            "FROM ("
-            "SELECT drivers.username "
+            "DISTINCT driver_username "
+            "FROM taken_trips "
+            "EXCEPT "
+            "SELECT DISTINCT tt.driver_username "
+            "FROM requested_trips "
+            "LEFT JOIN taken_trips tt on requested_trips.id = tt.id "
+            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver') ")
+        result = self.session.query(SQL_QUERY).all()
+        list_aux = []
+        for row in result:
+            list_aux.append(row[0])
+        tuple_aux = str(tuple(list_aux))
+        SQL_ORDER = text(
+            "driver_username "
+            "FROM taken_trips "
+            f"WHERE driver_username IN {tuple_aux} "
+            "ORDER BY updated_at DESC "
+            "LIMIT 4"
+        )
+        old_order = self.session.query(SQL_ORDER).all()
+        SQL_NEW_DRIVERS = text(
+            "drivers.username "
             "FROM drivers "
             "EXCEPT "
             "SELECT DISTINCT taken_trips.driver_username "
             "FROM requested_trips, taken_trips "
-            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver')) as x "
-            "INNER JOIN taken_trips ON x.username = taken_trips.driver_username")
-
-        SQL_AUX = text(
-            "taken_trips.driver_username, requested_trips.updated_at "
-            "FROM requested_trips, taken_trips "
         )
-        result = self.session.query(SQL_QUERY).all()
-
-        aux = self.session.query(SQL_AUX)
-        
-        #final = result.join(aux,result.with_entitie) == aux.username).all()
-        print("POLLLO")
-        print(result)
+        new_drivers = self.session.query(SQL_NEW_DRIVERS).all()
+        list_new_drivers = []
+        for row in new_drivers:
+            list_new_drivers.append(row[0])
+        tuple_new_drivers = str(tuple(list_new_drivers))
+        SQL_NEW_DRIVERS_ORDER = text(
+            "username "
+            "FROM drivers "
+            f"WHERE username IN {tuple_new_drivers} "
+            "ORDER BY created_at DESC "
+            "LIMIT 2"
+        )
+        final_new_drivers = self.session.query(SQL_NEW_DRIVERS_ORDER).all()
+        print("NEW DRIVERS ORDER")
+        print(final_new_drivers)
         print("\n")
-        print("COOOOOOOL")
-        print([row[0] for row in result])
-        return result
+        print("OLD ORDER")
+        print(old_order)
+        final_drivers = []
+        for row in old_order:
+            final_drivers.append(row[0])
+        print("TERMINE")
+        for row in final_new_drivers:
+            final_drivers.append(row[0])
+        print("RESULTADO FINAL")
+        print(final_drivers)
+        return final_drivers

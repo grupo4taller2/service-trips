@@ -14,4 +14,3 @@ driver_collection = db.driver_collection
 rider_collection = db.rider_collection
 
 token_collection = db.token_collection
-

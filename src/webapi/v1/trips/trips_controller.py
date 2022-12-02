@@ -102,8 +102,7 @@ async def trip_request(cmd: TripRequestRequest):
     )
 
     print(trip.state.name)
-    if(trip.state.name == 'looking_for_driver'):
-        print("heloooo")
+    if (trip.state.name == 'looking_for_driver'):
         sendNotificationDrivers()
 
     return TripResponse(
@@ -160,9 +159,7 @@ async def trip_patch(trip_id: str, req: TripPatchRequest):
     formatter = TripResponseFormatter()
     trip_resp = formatter.format(trip)
 
-    if(req.trip_state == 'accepted_by_driver'):
-        print("\n HOLA \n")
-        print(trip_resp.rider_username)
-        sendNotification(trip_resp.rider_username)
-        
+    if (req.trip_state == 'accepted_by_driver'):
+        sendNotification(trip_resp.rider_username, trip_resp.driver_username)
+
     return trip_resp
