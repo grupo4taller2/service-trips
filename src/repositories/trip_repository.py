@@ -1,7 +1,7 @@
-# flake8: noqa
 from uuid import UUID
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import text
+from sqlalchemy import text
+
 from src.database.requested_trip_dto import RequestedTripDTO
 from src.database.taken_trip_dto import TakenTripDTO
 
@@ -192,60 +192,3 @@ class TripRepository(BaseRepository):
         mapper = TripMapper()
 
         return [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
-
-    def find_free_drivers(self):
-        SQL_QUERY = text(
-            "DISTINCT driver_username "
-            "FROM taken_trips "
-            "EXCEPT "
-            "SELECT DISTINCT tt.driver_username "
-            "FROM requested_trips "
-            "LEFT JOIN taken_trips tt on requested_trips.id = tt.id "
-            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver') ")
-        result = self.session.query(SQL_QUERY).all()
-        list_aux = []
-        for row in result:
-            list_aux.append(row[0])
-        tuple_aux = str(tuple(list_aux))
-        SQL_ORDER = text(
-            "driver_username "
-            "FROM taken_trips "
-            f"WHERE driver_username IN {tuple_aux} "
-            "ORDER BY updated_at DESC "
-            "LIMIT 4"
-        )
-        old_order = self.session.query(SQL_ORDER).all()
-        SQL_NEW_DRIVERS = text(
-            "drivers.username "
-            "FROM drivers "
-            "EXCEPT "
-            "SELECT DISTINCT taken_trips.driver_username "
-            "FROM requested_trips, taken_trips "
-        )
-        new_drivers = self.session.query(SQL_NEW_DRIVERS).all()
-        list_new_drivers = []
-        for row in new_drivers:
-            list_new_drivers.append(row[0])
-        tuple_new_drivers = str(tuple(list_new_drivers))
-        SQL_NEW_DRIVERS_ORDER = text(
-            "username "
-            "FROM drivers "
-            f"WHERE username IN {tuple_new_drivers} "
-            "ORDER BY created_at DESC "
-            "LIMIT 2"
-        )
-        final_new_drivers = self.session.query(SQL_NEW_DRIVERS_ORDER).all()
-        print("NEW DRIVERS ORDER")
-        print(final_new_drivers)
-        print("\n")
-        print("OLD ORDER")
-        print(old_order)
-        final_drivers = []
-        for row in old_order:
-            final_drivers.append(row[0])
-        print("TERMINE")
-        for row in final_new_drivers:
-            final_drivers.append(row[0])
-        print("RESULTADO FINAL")
-        print(final_drivers)
-        return final_drivers
