@@ -80,6 +80,7 @@ def get_trips_for_driver(cmd: TripGetForDriver, uow: AbstractUnitOfWork):
 
 def trip_update(cmd: TripUpdateCommand, uow: AbstractUnitOfWork):
     with uow:
+        print(cmd.trip_state)
         trip: Trip = uow.trip_repository.find_by_id(cmd.trip_id)
         location: Location = Location('unknown',
                                       cmd.driver_latitude,

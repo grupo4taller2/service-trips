@@ -59,6 +59,8 @@ class AcceptedByDriverState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
+        if isinstance(new_state, AcceptedByDriverState):
+            return AcceptedByDriverState(driver)
         return DriverWaitingState(driver)
 
 
@@ -101,6 +103,8 @@ class OngoingState(TripState):
     def transition(self, driver, new_state):
         # FIXME: Cancelaciones se tratarían acá con un hashmap
         # de estados posibles, por ejemplo
+        if isinstance(new_state, OngoingState):
+            return OngoingState(driver)
         return FinishedState(driver)
 
 
