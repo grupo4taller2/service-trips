@@ -206,7 +206,10 @@ class TripRepository(BaseRepository):
         list_aux = []
         for row in result:
             list_aux.append(row[0])
+        if(len(list_aux) == 1):
+            list_aux.append("fake")
         tuple_aux = str(tuple(list_aux))
+        print(tuple_aux)
         SQL_ORDER = text(
             "driver_username "
             "FROM taken_trips "
