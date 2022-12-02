@@ -229,6 +229,8 @@ class TripRepository(BaseRepository):
         list_new_drivers = []
         for row in new_drivers:
             list_new_drivers.append(row[0])
+        if(len(list_new_drivers) == 1):
+            list_aux.append("fake")
         tuple_new_drivers = str(tuple(list_new_drivers))
         SQL_NEW_DRIVERS_ORDER = text(
             "username "
