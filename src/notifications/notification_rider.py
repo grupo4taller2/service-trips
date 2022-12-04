@@ -7,7 +7,8 @@ from exponent_server_sdk import (
 )
 
 
-def sendNotification(rider_username,driver_username):
+def sendNotificationRider(rider_username,driver_username):
+    print("SEND NOTIFICATION RIDER")
     token_bdd = token_collection.find_one({"username":rider_username})
     if(token_bdd is None):
         print("NO TOKEN")

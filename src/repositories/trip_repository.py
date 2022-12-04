@@ -17,6 +17,8 @@ from src.domain.distance import Distance
 
 from src.utils.formatters import TimeFormatter, DistanceFormatter
 
+from src.notifications.notification_rider import sendNotificationRider
+
 
 class TripMapper:
     def joined_sql_to_trip(self, sql_trip):
@@ -136,6 +138,11 @@ class TripRepository(BaseRepository):
         self.session.add(trip_dto)
 
     def update(self, trip: Trip):
+        previous_query = self.session.query(RequestedTripDTO).filter_by(id=str(trip.id)).first()
+        previous_state = previous_query.state
+        new_state = trip.state.name
+        if(previous_state == 'looking_for_driver' and new_state == 'accepted_by_driver'):
+            sendNotificationRider(previous_query.rider_username, trip.driver_username())
         state_update = {
             RequestedTripDTO.state: trip.state.name
         }
