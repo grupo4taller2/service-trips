@@ -41,6 +41,7 @@ def getFreeDrivers():
 
 
 def sendNotificationDrivers():
+    print("SEND NOTIFICATIONS DRIVERS")
     free_drivers = getFreeDrivers()
     print("Free Drivers")
     print(free_drivers)
