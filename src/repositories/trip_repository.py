@@ -213,18 +213,22 @@ class TripRepository(BaseRepository):
         list_aux = []
         for row in result:
             list_aux.append(row[0])
-        if(len(list_aux) == 1):
-            list_aux.append("fake")
-        tuple_aux = str(tuple(list_aux))
-        print(tuple_aux)
-        SQL_ORDER = text(
-            "driver_username "
-            "FROM taken_trips "
-            f"WHERE driver_username IN {tuple_aux} "
-            "ORDER BY updated_at DESC "
-            "LIMIT 4"
-        )
-        old_order = self.session.query(SQL_ORDER).all()
+        if(len(list_aux) != 0):
+            if(len(list_aux) == 1):
+                tuple_aux = "('" + list_aux[0] + "')"
+            else:
+                tuple_aux = str(tuple(list_aux))
+            print(tuple_aux)
+            SQL_ORDER = text(
+                "driver_username "
+                "FROM taken_trips "
+                f"WHERE driver_username IN {tuple_aux} "
+                "ORDER BY updated_at DESC "
+                "LIMIT 4"
+            )
+            old_order = self.session.query(SQL_ORDER).all()
+        else:
+            old_order = []
         SQL_NEW_DRIVERS = text(
             "drivers.username "
             "FROM drivers "
@@ -236,17 +240,21 @@ class TripRepository(BaseRepository):
         list_new_drivers = []
         for row in new_drivers:
             list_new_drivers.append(row[0])
-        if(len(list_new_drivers) == 1):
-            list_aux.append("fake")
-        tuple_new_drivers = str(tuple(list_new_drivers))
-        SQL_NEW_DRIVERS_ORDER = text(
-            "username "
-            "FROM drivers "
-            f"WHERE username IN {tuple_new_drivers} "
-            "ORDER BY created_at DESC "
-            "LIMIT 2"
-        )
-        final_new_drivers = self.session.query(SQL_NEW_DRIVERS_ORDER).all()
+        if(len(list_new_drivers) != 0):
+            if(len(list_new_drivers) == 1):
+                tuple_new_drivers = "('" + list_new_drivers[0] + "')"
+            else:
+                tuple_new_drivers = str(tuple(list_new_drivers))
+            SQL_NEW_DRIVERS_ORDER = text(
+                "username "
+                "FROM drivers "
+                f"WHERE username IN {tuple_new_drivers} "
+                "ORDER BY created_at DESC "
+                "LIMIT 2"
+            )
+            final_new_drivers = self.session.query(SQL_NEW_DRIVERS_ORDER).all()
+        else:
+            final_new_drivers = []
         print("NEW DRIVERS ORDER")
         print(final_new_drivers)
         print("\n")
