@@ -201,6 +201,20 @@ class TripRepository(BaseRepository):
         return [mapper.sql_to_trip(t_dto) for t_dto in trip_dtos]
 
     def find_free_drivers(self):
+
+        SQL_TEST = text(
+            "tt.id, tt.updated_at , tt.driver_username "
+            "FROM( "
+            "SELECT taken_trips.driver_username AS driver_username,MAX(taken_trips.updated_at) AS updated_at "
+            "FROM taken_trips "
+            "GROUP BY taken_trips.driver_username) x "
+            "JOIN taken_trips tt ON x.driver_username = tt.driver_username "
+            "AND x.updated_at = tt.updated_at "
+        )
+        SQL_TEST_2 = text(
+            "DISTINCT taken_trips.updated_at AS updated_at, taken_trips.driver_username AS driver_username "
+            "FROM requested_trips, taken_trips "
+        )
         SQL_QUERY = text(
             "DISTINCT driver_username "
             "FROM taken_trips "
@@ -208,11 +222,18 @@ class TripRepository(BaseRepository):
             "SELECT DISTINCT tt.driver_username "
             "FROM requested_trips "
             "LEFT JOIN taken_trips tt on requested_trips.id = tt.id "
-            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver') ")
-        result = self.session.query(SQL_QUERY).all()
+            "WHERE requested_trips.state IN ('accepted_by_driver', 'driver_arrived', 'start_confirmed_by_driver') "
+            )
+        result = self.session.query(SQL_TEST).all()
+        result_2 = self.session.query(SQL_TEST_2).all()
+        print("RESULT 2")
+        print(result_2)
+        print("RESULT")
+        print(result)
         list_aux = []
         for row in result:
             list_aux.append(row[0])
+        print(list_aux)
         if(len(list_aux) != 0):
             if(len(list_aux) == 1):
                 tuple_aux = "('" + list_aux[0] + "')"
@@ -220,10 +241,12 @@ class TripRepository(BaseRepository):
                 tuple_aux = str(tuple(list_aux))
             print(tuple_aux)
             SQL_ORDER = text(
-                "driver_username "
-                "FROM taken_trips "
-                f"WHERE driver_username IN {tuple_aux} "
-                "ORDER BY updated_at DESC "
+                "tt.driver_username "
+                "FROM requested_trips "
+                "LEFT JOIN taken_trips tt on requested_trips.id = tt.id "
+                f"WHERE requested_trips.id IN {tuple_aux} "
+                "AND requested_trips.state IN ('finished_confirmed_by_driver') "
+                "ORDER BY requested_trips.updated_at DESC "
                 "LIMIT 4"
             )
             old_order = self.session.query(SQL_ORDER).all()
