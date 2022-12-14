@@ -2,7 +2,7 @@ from pymongo import mongo_client
 import os
 
 
-client = mongo_client.MongoClient(os.environ['MONGO_ATLAS_TR'])
+client = mongo_client.MongoClient(os.environ['MONGO_CONNECTION'])
 
 
 print('Connected to MongoDB...')
