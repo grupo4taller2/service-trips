@@ -45,7 +45,7 @@ class DummyDirectionsFinder:
 
 class GMapsDirectionsFinder:
     BASE_URL = "https://maps.googleapis.com/maps/api/directions/json"
-    API_KEY = Settings().GEOCODING_API_KEY
+    API_KEY = Settings().DIRECTIONS_API_KEY
     NOT_FOUND_STATUS = 'NOT_FOUND'
 
     def directions_from_response(self, response,
